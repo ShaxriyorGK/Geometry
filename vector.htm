@@ -1,0 +1,220 @@
+<!-- Dekstop site-->
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="UTF-8">
+    <title>Vektor printer</title>
+    
+    <style>
+        
+        body 
+        {
+            margin: 0;
+        }
+                                                                
+        div 
+        {                            
+            font-size: 65px;
+        }
+        
+        img 
+        {
+            width: 10%;
+            height: 5%;
+        }
+        
+        input 
+        {
+            width: 80px;
+            height: 60px;
+            margin: 0;
+            font-size: 55px;
+            border: solid 0.01px;
+            text-align: center;
+        }     
+        
+        #dekart
+        {
+            background-image: url('https://raw.githubusercontent.com/ShaxriyorGK/Geometry/main/dekart.png');
+            width: 1280px;
+            height: 1280px;
+            border: solid 12px;
+            
+        }
+        
+        button 
+        {
+            width: 200px;
+            height: 60px;
+            font-size: 55px;
+            background-color: #66ff55;
+            border: solid 1px;
+            border-radius: 14px;
+        }
+     
+        button:active 
+        {
+            background-color: #91ff80;
+        }
+     
+        span 
+        {
+            position: absolute;
+            color: #ff000a;
+            font-size: 0;
+        }
+        
+        #info 
+        {
+            
+            display: block;
+            font-size: 60px;
+        }
+        
+        #asosiy,
+        #info 
+        {
+            margin: 20px;
+        }
+ 
+    </style>
+    
+</head>
+<body>
+    <div id="asosiy">
+        <img src="https://raw.githubusercontent.com/ShaxriyorGK/Geometry/main/ab.png" alt="abV">
+        vektor boshi va uchining koordinatalarini kiriting
+        <br>
+        A(<input maxlength="4" id="xa">;
+          <input maxlength="4" id="ya">)
+        B(<input maxlength="4" id="xb">;
+          <input maxlength="4" id="yb">)
+        <br>
+        <button onclick="enter()">kiritish</button>
+    </div>
+                                                                                            
+    <div id="dekart">
+        <span id="a">A</span>
+        <span id="b">B</span>
+        <svg 
+            width="1280"
+            height="1280"
+            id="svg"
+            xmlns="http://www.w3.org/2000/svg"
+        >                                                                            
+            <defs> 
+                <marker 
+                    id="arrow" 
+                    markerWidth="10" 
+                    markerHeight="10" 
+                    refX="8" 
+                    refY="3" 
+                    orient="auto" 
+                    markerUnits="strokeWidth"
+                >
+                <path 
+                    d="M0,0 L0,6 L9,3 z" 
+                    fill="#000"
+                > 
+                </marker> 
+            </defs> 
+            <line 
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="0"
+                stroke="black"
+                stroke-width="5"
+                id="line"
+                marker-end="url(#arrow)"
+            ></line>
+        </svg>
+    </div>
+    
+    <div id="info">
+        Uzunligi:|<img src="https://raw.githubusercontent.com/ShaxriyorGK/Geometry/main/ab.png" alt="abV">|
+        <i id="uzunlig"></i>
+        <br>
+        Koordinatalari:<img src="https://raw.githubusercontent.com/ShaxriyorGK/Geometry/main/ab.png" alt="abV">
+        <i id="koord"></i>
+        <br>
+        Koordinata o'qlaridagi proyeksiyalari
+        <br>
+        <i id="proyeksiya">x= y=</i>
+    </div>
+    
+    <script>
+        
+        function enter() {
+        
+            var xa = eval(document.getElementById('xa').value);
+            var ya = eval(document.getElementById('ya').value);
+            var xb = eval(document.getElementById('xb').value);
+            var yb = eval(document.getElementById('yb').value);
+            
+            var x1 = xa*43 + 648;
+            var y1 = 640 - ya*43;
+            var x2 = xb*43 + 648;
+            var y2 = 640 - yb*43;
+            
+            var line = document.getElementById('line');
+            line.setAttribute('x1', x1);
+            line.setAttribute('y1', y1);
+            line.setAttribute('x2', x2);
+            line.setAttribute('y2', y2);
+                        
+            var a = document.getElementById('a');
+            var b = document.getElementById('b');
+            
+            var leftA = x1 + 'px';
+            var topA = y1 + 346 + 'px';
+            
+            var leftB = x2 + 'px';
+            var topB = y2 + 362 + 'px';
+            
+            a.style.left = leftA;
+            a.style.top = topA;
+            
+            b.style.left = leftB;
+            b.style.top = topB;
+            
+            a.style.fontSize = '100%';
+            b.style.fontSize = '100%';
+            
+            var uzun = Math.sqrt((xa - xb)**2 + (ya - yb)**2);
+            if(uzun.toString().length > 5) {
+                document.getElementById('uzunlig').innerHTML = '&asymp;' + uzun;
+            } else {
+                document.getElementById('uzunlig').innerHTML = '=' + uzun;
+            }
+            
+            var kx = (xb - xa).toString(); 
+            var ky = (yb - ya).toString();
+            var tx = ty = '';
+            
+            if(kx.length > 5 || ky.length > 5) {
+                document.getElementById('koord').innerHTML = `taqriban <br>(${kx};${ky})`; 
+            } else {
+                document.getElementById('koord').innerHTML = `(${kx};${ky})`; 
+            }
+            
+            if(kx.length > 5) {
+                tx = '&asymp;';
+            } else {
+                tx = '=';
+            }
+            if(ky.length > 5) {
+                ty = '&asymp;';
+            } else {
+                ty = '=';
+            }
+            
+            document.getElementById('proyeksiya').innerHTML = `x${tx + Math.abs(kx)} y${ty + Math.abs(ky)}`;
+        
+        }
+        
+    </script>
+    
+</body>
+</html>
